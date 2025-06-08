@@ -1,13 +1,18 @@
 from fastapi import FastAPI
-from app.database import init_db
-from app.routers import pacientes, laboratorios
+from app.routers import (
+    pacientes, laboratorios,
+    laboratorio_examen, resultado_examenes,
+    citas, hospitalizaciones,
+    especialidades, medicos
+)
 
-app = FastAPI(title="ProyectoDB API")
+app = FastAPI()
 
-@app.on_event("startup")
-def on_startup():
-    init_db()
-
-# Monta tus routers:
-app.include_router(pacientes.router)
-app.include_router(laboratorios.router)
+for r in [
+    pacientes.router, laboratorios.router,
+    laboratorio_examen.router, resultado_examenes.router,
+    citas.router, hospitalizaciones.router,
+    especialidades.router, medicos.router
+]:
+    app.include_router(r)
+# 
