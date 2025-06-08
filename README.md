@@ -39,8 +39,8 @@ proyecto4/
 1. Clonar el repositorio:
 
 ```bash
-git clone <url-del-repositorio>
-cd ProyectoDBback
+git clone https://github.com/CarEsteban/Proyecto4DBback.git
+cd Proyecto4DBback
 ```
 
 2. Crear un entorno virtual e instalarlo:
