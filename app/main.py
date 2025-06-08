@@ -9,5 +9,5 @@ def on_startup():
     init_db()
 
 # Monta tus routers:
-app.include_router(pacientes.router, prefix="/pacientes", tags=["pacientes"])
-app.include_router(laboratorios.router, prefix="/laboratorios", tags=["laboratorios"])
+app.include_router(pacientes.router)
+app.include_router(laboratorios.router)
