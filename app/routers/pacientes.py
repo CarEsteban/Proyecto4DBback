@@ -21,12 +21,16 @@ def crear_paciente(p: schemas.PacienteCreate, db: Session = Depends(get_db)):
 def listar_pacientes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_pacientes(db, skip, limit)
 
+@router.get("/recientes", response_model=list[schemas.PacienteReciente])
+def listar_pacientes_recientes(db: Session = Depends(get_db)):
+    return crud.get_pacientes_recientes(db)
+
 @router.get("/{paciente_id}", response_model=schemas.PacienteInDB)
 def obtener_paciente(paciente_id: int, db: Session = Depends(get_db)):
-    pac = crud.get_paciente(db, paciente_id)
-    if not pac:
+    paciente = crud.get_paciente(db, paciente_id)
+    if not paciente:
         raise HTTPException(404, "Paciente no encontrado")
-    return pac
+    return paciente
 
 @router.put("/{paciente_id}", response_model=schemas.PacienteInDB)
 def actualizar_paciente(paciente_id: int, datos: schemas.PacienteUpdate, db: Session = Depends(get_db)):
@@ -41,8 +45,3 @@ def borrar_paciente(paciente_id: int, db: Session = Depends(get_db)):
     if not pac:
         raise HTTPException(404, "Paciente no encontrado")
     return pac
-
-# Listar “Recientes” (solo lectura)
-@router.get("/recientes", response_model=list[schemas.PacienteReciente])
-def listar_pacientes_recientes(db: Session = Depends(get_db)):
-    return crud.get_pacientes_recientes(db)

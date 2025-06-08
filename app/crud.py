@@ -74,7 +74,17 @@ def get_pacientes_recientes(db: Session):
     return db.query(models.VistaPacientesRecientes).all()
 
 def get_laboratorios_recientes(db: Session):
-    return db.query(models.VistaLaboratoriosRecientes).all()
+    return db.query(
+        models.Paciente.nombre.label("paciente_nombre"),
+        models.Paciente.apellido.label("paciente_apellido"),
+        models.Laboratorio.nombre.label("laboratorio_nombre"),
+        models.Medico.nombre.label("medico_nombre"),
+        models.Laboratorio.fecha,
+        models.Laboratorio.resultado.label("resultado")
+    ).join(models.Laboratorio, models.Laboratorio.paciente_id == models.Paciente.id
+    ).join(models.Medico, models.Laboratorio.medico_id == models.Medico.id
+    ).order_by(models.Laboratorio.fecha.desc()
+    ).limit(10).all()
 
 
 ### LABORATORIO_EXAMEN CRUD ###
@@ -290,3 +300,14 @@ def delete_medico(db: Session, id: int):
     db.delete(obj)
     db.commit()
     return obj
+
+def get_medicos_por_especialidad(db: Session, esp_id: int):
+    return (
+        db.query(models.Medico)
+          .join(
+            models.MedicoEspecialidad,
+            models.MedicoEspecialidad.id_medico == models.Medico.id
+          )
+          .filter(models.MedicoEspecialidad.id_especialidad == esp_id)
+          .all()
+    )

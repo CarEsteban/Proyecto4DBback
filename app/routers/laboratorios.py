@@ -20,6 +20,10 @@ def crear_laboratorio(l: schemas.LaboratorioCreate, db: Session = Depends(get_db
 def listar_laboratorios(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_laboratorios(db, skip, limit)
 
+@router.get("/recientes", response_model=list[schemas.LaboratorioReciente])
+def listar_laboratorios_recientes(db: Session = Depends(get_db)):
+    return crud.get_laboratorios_recientes(db)
+
 @router.get("/{lab_id}", response_model=schemas.LaboratorioInDB)
 def obtener_laboratorio(lab_id: int, db: Session = Depends(get_db)):
     lab = crud.get_laboratorio(db, lab_id)
@@ -40,8 +44,3 @@ def borrar_laboratorio(lab_id: int, db: Session = Depends(get_db)):
     if not lab:
         raise HTTPException(404, "Laboratorio no encontrado")
     return lab
-
-# Listar “Recientes” (solo lectura)
-@router.get("/recientes", response_model=list[schemas.LaboratorioReciente])
-def listar_laboratorios_recientes(db: Session = Depends(get_db)):
-    return crud.get_laboratorios_recientes(db)

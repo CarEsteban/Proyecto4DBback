@@ -33,6 +33,10 @@ class PacienteInDB(PacienteBase):
 class LaboratorioBase(BaseModel):
     nombre: str
     ubicacion: str
+    paciente_id: int
+    medico_id: int
+    fecha: Optional[date] = None
+    resultado: Optional[str] = None
 
 class LaboratorioCreate(LaboratorioBase):
     pass
@@ -59,13 +63,14 @@ class PacienteReciente(BaseModel):
         from_attributes = True
 
 class LaboratorioReciente(BaseModel):
-    name: str
-    lastname: str
-    result: str
-    resultUpdate: Optional[datetime] = None
-    lastVisit: Optional[datetime] = None
+    paciente_nombre: str
+    paciente_apellido: str
+    laboratorio_nombre: str
+    medico_nombre: str
+    fecha: str
+    resultado: str
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 # --------------------- Laboratorio_Examen ---------------------
 class LabExamenBase(BaseModel):
