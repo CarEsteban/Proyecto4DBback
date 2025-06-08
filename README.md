@@ -2,6 +2,32 @@
 
 API REST desarrollada con FastAPI para gestionar pacientes y laboratorios.
 
+## Estructura del Proyecto
+
+```
+proyecto4/
+├── ProyectoDBback/         # Backend con FastAPI
+│   ├── app/
+│   │   ├── routers/
+│   │   ├── crud.py
+│   │   ├── database.py
+│   │   ├── main.py
+│   │   ├── models.py
+│   │   └── schemas.py
+│   ├──requirements.txt
+│   └── README.md
+│
+├── bd/                 # Scripts SQL
+│   ├── ddl.sql        # Definición de tablas
+│   ├── data.sql       # Datos iniciales
+│   ├── functions.sql  # Funciones
+│   ├── triggers.sql   # Triggers
+│   └── views.sql      # Vistas
+│   
+└── ProyectoDBfront/        # Frontend (interfaz de usuario)
+    └── ... archivos del frontend
+```
+
 ## Requisitos Previos
 
 - Python 3.8+
@@ -34,20 +60,37 @@ pip install -r requirements.txt
 
 4. Configurar la base de datos:
 
-- Crear una base de datos PostgreSQL llamada `proyecto4bd`
-- Asegurarse que las credenciales en `app/database.py` coincidan con tu configuración:
+a) Ingresar a PostgreSQL como usuario postgres:
+```bash
+psql -U postgres
+```
+
+b) Crear la base de datos y asignar el owner (reemplaza 'usuario' con tu nombre de usuario):
+```sql
+CREATE DATABASE proyecto4bd WITH OWNER = usuario;
+```
+
+c) Salir de psql:
+```sql
+\q
+```
+
+d) Asegurarse que las credenciales en `app/database.py` coincidan con tu configuración:
 ```python
 SQLALCHEMY_DATABASE_URL = "postgresql://usuario:contraseña@localhost/proyecto4bd"
 ```
 
-## Estructura de Archivos SQL
+5. Crear la carpeta `bd/` con los scripts SQL necesarios:
+```bash
+mkdir bd
+touch bd/ddl.sql bd/data.sql bd/functions.sql bd/triggers.sql bd/views.sql
+```
 
-Crear una carpeta `bd/` en la raíz del proyecto con los siguientes archivos:
-- `ddl.sql`: Definición de tablas
-- `data.sql`: Datos iniciales
-- `functions.sql`: Funciones SQL
-- `triggers.sql`: Triggers
-- `views.sql`: Vistas
+- `ddl.sql`: Define las tablas de pacientes y laboratorios
+- `data.sql`: Inserta datos de prueba iniciales
+- `functions.sql`: Define funciones SQL personalizadas
+- `triggers.sql`: Define triggers para la base de datos
+- `views.sql`: Define vistas para consultas frecuentes
 
 ## Ejecución
 
